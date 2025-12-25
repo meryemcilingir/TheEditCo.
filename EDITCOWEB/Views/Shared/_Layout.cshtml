@@ -1,41 +1,46 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - The Edit Co.</title>
 
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
-    <!-- CSS -->
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
 
     <!-- NAVBAR -->
-    <header class="navbar" id="navbar">
+    <header class="navbar">
         <div class="nav-left">
-            <a href="#urunler">ÜRÜNLERİMİZ</a>
-            <a href="#yeni-gelenler">YENİ GELENLER</a>
-            <a href="#kampanyalar">KAMPANYALAR</a>
-
+            <a href="/">Anasayfa</a>
+            <a href="/Home/Products">Ürünler</a>
+            <a href="#">Yeni Gelenler</a>
+            <a href="#">Kampanyalar</a>
         </div>
 
-        <div class="nav-logo">The Edit Co.</div>
+        <div class="nav-logo">
+            The Edit Co.
+        </div>
 
         <div class="nav-right">
-            <a asp-controller="Account" asp-action="Login">GİRİŞ YAP / ÜYE OL</a>
+            @if (Context.Session.GetString("UserEmail") == null)
+            {
+                <a href="/Account/Login">Giriş Yap / Üye Ol</a>
+            }
+            else
+            {
+                <a href="/Account/Profile">Profilim</a>
+                <a href="/Account/Logout">Çıkış</a>
+            }
         </div>
     </header>
 
-    <!-- SAYFA İÇERİĞİ -->
+    <!-- PAGE CONTENT -->
     <main>
         @RenderBody()
     </main>
 
-    <!-- JS -->
-    <script src="~/js/script.js"></script>
 </body>
 </html>
-
