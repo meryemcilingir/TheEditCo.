@@ -1,3 +1,4 @@
+ï»¿
 * {
     margin: 0;
     padding: 0;
@@ -28,7 +29,7 @@ body {
     .navbar a {
      
     font-family: 'Inter', sans-serif;
-    font-size: 15px; /* büyüttük */
+    font-size: 15px; /* bÃ¼yÃ¼ttÃ¼k */
     font-weight: 500; /* siliklik gitti */
     letter-spacing: 1px;
     color: #5a3f3f; /* daha net */
@@ -75,7 +76,7 @@ body {
     background: rgba(255,240,244,0.25);
 }
 
-..hero-content {
+.hero-content {
     max-width: 420px;
     text-align: left;
 }
@@ -169,13 +170,13 @@ html {
    ========================= */
 
 .auth-body {
-    padding-top: 0; /* body'e genel padding verme, sadece auth-main yönetecek */
+    padding-top: 0; /* body'e genel padding verme, sadece auth-main yÃ¶netecek */
 }
 
-/* Navbar fixed ise auth sayfalarýnda boþluk býrak */
+/* Navbar fixed ise auth sayfalarÄ±nda boÅŸluk bÄ±rak */
 .auth-main {
     min-height: 100vh;
-    padding-top: 90px; /* navbar altýnda kalmayý çözer */
+    padding-top: 90px; /* navbar altÄ±nda kalmayÄ± Ã§Ã¶zer */
     padding-left: 24px;
     padding-right: 24px;
     display: flex;
@@ -197,7 +198,7 @@ html {
     backdrop-filter: blur(10px);
 }
 
-/* baþlýk */
+/* baÅŸlÄ±k */
 .auth-title {
     font-family: "Playfair Display", serif;
     font-size: 28px;
@@ -205,7 +206,7 @@ html {
     margin: 0 0 16px 0;
 }
 
-/* input alanlarý */
+/* input alanlarÄ± */
 .auth-field {
     margin-bottom: 12px;
 }
@@ -382,5 +383,6 @@ html {
     border-radius: 10px;
     text-decoration: none;
 }
+
 
 
