@@ -1,0 +1,271 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürün Detayı</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .geri-don {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .urun-kapsayici {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .urun-gorsel {
+            flex: 1;
+            min-width: 300px;
+        }
+
+            .urun-gorsel img {
+                width: 100%;
+                border-radius: 10px;
+                border: 1px solid #eee;
+                object-fit: cover;
+            }
+
+        .urun-bilgi {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .fiyat {
+            font-size: 1.8rem;
+            color: #e0a6aa;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .aciklama {
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* Pembe Buton */
+        .sepete-ekle-btn {
+            background-color: #e0a6aa;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            box-shadow: 0 4px 10px rgba(224, 166, 170, 0.4);
+        }
+
+            .sepete-ekle-btn:hover {
+                background-color: #c9858a;
+                transform: scale(1.05);
+            }
+
+        @media (max-width: 768px) {
+            .urun-kapsayici {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/" class="geri-don">← Ana Sayfaya Dön</a>
+
+    <div class="urun-kapsayici">
+        <div class="urun-gorsel">
+            <img id="u-resim" src="" alt="Ürün Resmi">
+        </div>
+        <div class="urun-bilgi">
+            <h1 id="u-baslik">Ürün Yükleniyor...</h1>
+            <div id="u-fiyat" class="fiyat"></div>
+            <p id="u-aciklama" class="aciklama"></p>
+            <button class="sepete-ekle-btn">Sepete Ekle</button>
+        </div>
+    </div>
+
+    <script>
+        // --- BURASI SENİN ÜRÜN DEPON ---
+        // Buradaki bilgileri kendi ürünlerine göre değiştirebilirsin.
+        // Resim isimlerini (jpg) klasöründekilerle aynı yapmayı unutma!
+        const urunListesi = {
+            // SERUMLAR
+            "serum1": {
+                baslik: "Aydınlatıcı Serum",
+                fiyat: "899 TL",
+                resim: "images/serumlar/serum1.png",
+                aciklama: "Cildinize ışıltı katar, lekeleri azaltır."
+            },
+            "serum2": {
+                baslik: "Nem Serumu (Hyaluronik Asit)",
+                fiyat: "420 TL",
+                resim: "images/serumlar/serum2.png",
+                aciklama: "Yoğun nemlendirme sağlar, dolgunlaştırır."
+            },
+            "serum33": {
+                baslik: "C Vitamini Canlandırıcı",
+                fiyat: "480 TL",
+                resim: "images/serumlar/serum33.png",
+                aciklama: "Yaşlanma karşıtı bakım, ince çizgi görünümünü azaltır."
+            },
+            "serum4": {
+                baslik: "Retinol Gece Bakım Serumu",
+                fiyat: "1.250 TL",
+                resim: "images/serumlar/serum4.png",
+                aciklama: "Gözenekleri sıkılaştırır ve yağ dengesini sağlar."
+            },
+
+            // GÜNEŞ KREMLERİ
+            "gunes1": {
+                baslik: "50 SPF Yüksek Koruma",
+                fiyat: "550 TL",
+                resim: "images/güneş kremi/guneskremi1.png",
+                aciklama: "Yüksek koruma, beyaz iz bırakmaz."
+            },
+            "gunes2": {
+                baslik: "Leke Karşıtı Güneş Kremi",
+                fiyat: "600 TL",
+                resim: "images/güneş kremi/güneskremi2.png",
+                aciklama: "Güneş lekelerine karşı özel formül."
+            },
+            "gunes3": {
+                baslik: "Renkli Güneş Kremi(Tinted)",
+                fiyat: "580 TL",
+                resim: "images/güneş kremi/guneskremi3.png",
+                aciklama: "Cilt tonunu eşitler ve korur."
+            },
+            "gunes4": {
+                baslik: "Stick Güneş Koruyucu",
+                fiyat: "350 TL",
+                resim: "images/güneş kremi/güneskremi4.png",
+                aciklama: "Parfümsüz, hassas ciltlere özel."
+            },
+
+            // YÜZ TEMİZLEME JELLERİ
+            "jel11": {
+                baslik: "Arındırıcı Temizleme Jeli",
+                fiyat: "280 TL",
+                resim: "images/yüz temizleme jeli/yüztemizlemejeli11.png",
+                aciklama: "Yağlı ciltler için derinlemesine temizlik."
+        },
+            "jel22": {
+                baslik: "Köpük Temizleyici",
+                fiyat: "320 TL",
+                resim:"images/yüz temizleme jeli/yüztemizlemejeli22.png",
+                aciklama: "Kuru ciltleri kurutmadan temizler."
+            },
+            "jel3": {
+                baslik: "Hassas Ciltler İçin Jel",
+                fiyat: "300 TL",
+                resim:"images/yüz temizleme jeli/yüztemizlemejei3.png",
+                aciklama: "Ölü derilerden arındırır."
+            },
+            "jel4": {
+                baslik: "Yağ Bazlı Temizleyici",
+                fiyat: "350 TL",
+                resim:"images/yüz temizleme jeli/yüztemizlemejeli4.png",
+                aciklama: "Yumuşak formül, cildi yormaz."
+            },
+
+            // NEMLENDİRİCİLER
+            "nem1": {
+                baslik: "Su Bazlı Nemlendirici",
+                fiyat: "400 TL",
+                resim:"images/nemlendirici/nemlendirici1.png" ,
+                aciklama: "Su bazlı, hafif yapılı nemlendirici."
+            },
+            "nem2": {
+                baslik: "Yoğun Bakım Kremi",
+                fiyat: "450 TL",
+                resim:"images/nemlendirici/nemlendirici2.png",
+                aciklama: "Kuru ve çatlamış ciltler için."
+            },
+            "nem33": {
+                baslik: "Gece Maskesi",
+                fiyat: "480 TL",
+                resim:"images/nemlendirici/nemlendirici33.png" ,
+                aciklama: "Parlamayı önler, nem verir."
+            },
+            "nem4": {
+                baslik: "Onarıcı Cica Krem",
+                fiyat: "390 TL",
+                resim:"images/nemlendirici/nemlendirici4.png",
+                aciklama: "Siz uyurken cildinizi besler."
+            },
+
+            // TONİKLER
+            "tonik1": {
+                baslik: "Gözenek Sıkılaştırıcı Tonik",
+                fiyat: "350 TL",
+                resim:"images/tonik/tonik1.png",
+                aciklama: "Gözenek görünümünü azaltır."
+            },
+            "tonik2": {
+                baslik: "Aydınlatıcı Vitamin Tonik",
+                fiyat: "380 TL",
+                resim:"images/tonik/tonik2.png" ,
+                aciklama: "Cilde parlaklık verir."
+            },
+            "tonik3": {
+                baslik: "Yatıştırıcı Gül Suyu Tonik",
+                fiyat: "290 TL",
+                resim:"images/tonik/tonik3.png",
+                aciklama: "Kızarıklıkları alır."
+            },
+            "tonik44": {
+                baslik: "Matlaştırıcı Tonik",
+                fiyat: "320 TL",
+                resim:"images/tonik/tonik44.png",
+                aciklama: "Siyah nokta karşıtı."
+            }
+        };
+
+        // --- SİHİRLİ KISIM (Otomatik Doldurma) ---
+        const urlParametreleri = new URLSearchParams(window.location.search);
+        const urunKodu = urlParametreleri.get('id'); // Linkten kodu al (örn: serum1)
+        const urun = urunListesi[urunKodu]; // Listeden ürünü bul
+
+        if (urun) {
+            // Eğer ürün varsa bilgileri ekrana yaz
+            document.getElementById('u-baslik').innerText = urun.baslik;
+            document.getElementById('u-fiyat').innerText = urun.fiyat;
+            document.getElementById('u-aciklama').innerText = urun.aciklama;
+            document.getElementById('u-resim').src = urun.resim;
+        } else {
+            // Ürün bulunamazsa
+            document.getElementById('u-baslik').innerText = "Ürün Bulunamadı";
+            document.getElementById('u-aciklama').innerText = "Lütfen ana sayfadan bir ürün seçiniz.";
+        }
+    </script>
+</body>
+</html>
