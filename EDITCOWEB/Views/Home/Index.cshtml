@@ -83,6 +83,72 @@
         text-transform: uppercase;
         letter-spacing: 1px;
     }
+
+
+    /* Filtre Menüsü Kapsayıcısı */
+.filtre-menusu-kapsayici {
+    position: relative;
+    display: inline-block;
+}
+
+/* Açılır Menü Kutusu (Başlangıçta Gizli) */
+.filtre-dropdown-icerik {
+    display: none; /* Gizli */
+    position: absolute;
+    right: 0; /* Sağa yasla */
+    top: 35px; /* Simgenin biraz altından başla */
+    background-color: #fff;
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100; /* Diğer her şeyin üstünde olsun */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Menü Linkleri */
+.filtre-dropdown-icerik a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-bottom: 1px solid #f1f1f1;
+    transition: background-color 0.3s;
+}
+
+/* Linklerin Üzerine Gelince */
+.filtre-dropdown-icerik a:hover {
+    background-color: #f9f9f9;
+    color: #e0a6aa; /* Pembe renk */
+}
+
+/* Menü Açıldığında Göster */
+.show {
+    display: block;
+    animation: menuyuAc 0.3s ease-out; /* Açılma efekti */
+}
+
+/* Hafifçe yukarıdan aşağıya açılma efekti */
+@@keyframes menuyuAc {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+    /* Sepet Sayacı Tasarımı */
+    .sepet-badge {
+        background-color: #e0a6aa; /* Senin temanın pembe rengi */
+        color: white; /* Yazı rengi beyaz */
+        border-radius: 50%; /* Tam yuvarlak olsun */
+        padding: 2px 6px; /* İçindeki boşluk */
+        font-size: 0.75rem; /* Yazı boyutu */
+        font-weight: bold; /* Kalın yazı */
+        /* Konumlandırma Ayarları */
+        position: absolute; /* İkonun üzerine yapışması için */
+        top: -2px; /* Biraz yukarı */
+        right: -2px; /* Biraz sağa */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Hafif gölge */
+    }
+
 </style>
 
 <section class="hero">
@@ -100,9 +166,29 @@
 
 <section id="urunler" class="section container mt-5">
 
-    <h2 class="text-center mb-5" style="color: #5a3e3e; font-weight:300; letter-spacing:2px;">ÜRÜNLERİMİZ</h2>
+    <div class="urunler-baslik-kapsayici" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; position: relative;">
 
-    <h4 class="kategori-baslik">SERUMLAR</h4>
+        <h2 class="section-title" style="margin: 0;">ÜRÜNLERİMİZ</h2>
+
+        <div class="filtre-menusu-kapsayici">
+
+            <div class="filtre-simgesi" onclick="menuyuAcKapat()">
+                <i class="fa-solid fa-sliders" style="font-size: 24px; color: #333; cursor: pointer;"></i>
+            </div>
+
+            <div id="filtre-dropdown" class="filtre-dropdown-icerik">
+                <a href="#serumlar" onclick="menuyuKapat()">Serumlar</a>
+                <a href="#gunes-kremleri" onclick="menuyuKapat()">Güneş Kremleri</a>
+                <a href="#temizleme-jelleri" onclick="menuyuKapat()">Temizleme Jelleri</a>
+                <a href="#nemlendiriciler" onclick="menuyuKapat()">Nemlendiriciler</a>
+                <a href="#tonikler" onclick="menuyuKapat()">Tonikler</a>
+                <a href="#yeni-gelenler" onclick="menuyuKapat()">Yeni Gelenler</a>
+            </div>
+
+        </div>
+    </div>
+
+    <h4 class="kategori-baslik" id="serumlar">SERUMLAR</h4>
 
     <div class="ozel-urun-grid">
         <div class="urun-karti-yeni">
@@ -156,7 +242,7 @@
     </div>
 
 
-    <h4 class="kategori-baslik">TONİKLER</h4>
+    <h4 class="kategori-baslik" id="tonikler">TONİKLER</h4>
 
     <div class="ozel-urun-grid">
         <div class="urun-karti-yeni">
@@ -210,7 +296,7 @@
     </div>
 
 
-    <h4 class="kategori-baslik">GÜNEŞ KREMLERİ</h4>
+    <h4 class="kategori-baslik" id="gunes-kremleri">GÜNEŞ KREMLERİ</h4>
 
     <div class="ozel-urun-grid">
         <div class="urun-karti-yeni">
@@ -264,7 +350,7 @@
     </div>
 
 
-    <h4 class="kategori-baslik">YÜZ TEMİZLEME JELİ</h4>
+    <h4 class="kategori-baslik" id="temizleme-jelleri">YÜZ TEMİZLEME JELİ</h4>
 
     <div class="ozel-urun-grid">
         <div class="urun-karti-yeni">
@@ -317,7 +403,7 @@
         </div>
     </div>
 
-    <h4 class="kategori-baslik">NEMLENDİRİCİLER</h4>
+    <h4 class="kategori-baslik" id="nemlendiriciler">NEMLENDİRİCİLER</h4>
 
     <div class="ozel-urun-grid">
         <div class="urun-karti-yeni">
@@ -369,14 +455,14 @@
             </div>
         </div>
     </div>
-    
+
 
 </section>
 
 
 <section id="yeni-gelenler" class="section soft-bg py-5" style="background-color: #f9f9f9;">
     <div class="container">
-        <h2 class="text-center mb-5">Yeni Gelenler</h2>
+        <h2 class="text-center mb-5" id="yeni-gelenler">Yeni Gelenler</h2>
         <div class="ozel-urun-grid">
             <div class="urun-karti-yeni">
                 <div class="resim-cercevesi">
@@ -450,21 +536,74 @@
 
         </div>
     </div>
-
-    <script>
-        const serit = document.getElementById('slider-serit');
-        const resimSayisi = 3;
-        let aktifSira = 0;
-
-        function kaydir() {
-            aktifSira++;
-            if (aktifSira >= resimSayisi) {
-                aktifSira = 0;
-            }
-            serit.style.transform = `translateX(-${aktifSira * 100}%)`;
-        }
-
-        setInterval(kaydir, 5000);
-    </script>
 </section>
 
+function menuyuAcKapat() {
+    var menu = document.getElementById("filtre-dropdown");
+    if (menu) {
+        menu.classList.toggle("show");
+    } else {
+        console.error("Hata: 'filtre-dropdown' id'li kutu bulunamadı.");
+    }
+}
+
+<script>
+    <script>
+        // Sayfa açılınca sepetteki sayıyı göster
+        guncelleSepetSayisi();
+
+        function sepeteEkle(tiklananButon) {
+            // 1. Tıklanan butonun içinde bulunduğu Ürün Kutusunu bul
+            // (Senin kodunda 'urun-kutusu', 'card' veya 'col-md-...' olabilir, hepsini deniyoruz)
+            var urunKutusu = tiklananButon.closest('.urun-kutusu, .card, .col, .col-md-3, .col-md-4, .urun-gorsel');
+
+            if (urunKutusu) {
+                // 2. O kutunun içindeki Resim, İsim ve Fiyatı bul
+                // (Not: HTML etiketlerin farklıysa burayı güncellememiz gerekebilir)
+                var resim = urunKutusu.querySelector('img').src;
+
+                // Başlığı bulmaya çalış (h4, h5 veya card-title olabilir)
+                var adElementi = urunKutusu.querySelector('h4, h5, .card-title, .urun-baslik');
+                var ad = adElementi ? adElementi.innerText : "Ürün Adı Bulunamadı";
+
+                // Fiyatı bulmaya çalış
+                var fiyatElementi = urunKutusu.querySelector('.fiyat, .price, p b, span b');
+                var fiyat = fiyatElementi ? fiyatElementi.innerText : "Fiyat Yok";
+
+                // 3. Yeni Ürün Paketi Hazırla
+                var yeniUrun = {
+                    resim: resim,
+                    ad: ad,
+                    fiyat: fiyat,
+                    adet: 1
+                };
+
+                // 4. Sepeti Hafızadan Çek
+                var sepet = JSON.parse(localStorage.getItem('sepetim')) || [];
+
+                // 5. Listeye Ekle
+                sepet.push(yeniUrun);
+
+                // 6. Güncel Listeyi Kaydet
+                localStorage.setItem('sepetim', JSON.stringify(sepet));
+
+                // 7. Sadece sayıyı da ayrıca kaydet (Header'daki yuvarlak için)
+                localStorage.setItem('sepetSayisi', sepet.length);
+
+                // 8. Bildirim Ver ve Sayacı Güncelle
+                bildirimGoster("Ürün sepete eklendi!");
+                guncelleSepetSayisi();
+
+            } else {
+                console.error("HATA: Ürün kutusu bulunamadı! Class isimlerini kontrol et.");
+                alert("Hata oluştu, F12 Console ekranına bakınız.");
+            }
+        }
+
+        function guncelleSepetSayisi() {
+            var sepet = JSON.parse(localStorage.getItem('sepetim')) || [];
+            var rozet = document.getElementById("sepet-sayisi");
+            if (rozet) rozet.innerText = sepet.length;
+        }
+</script>
+</script>

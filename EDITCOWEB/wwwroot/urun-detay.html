@@ -103,6 +103,7 @@
     <a href="/" class="geri-don">← Ana Sayfaya Dön</a>
 
     <div class="urun-kapsayici">
+
         <div class="urun-gorsel">
             <img id="u-resim" src="" alt="Ürün Resmi">
         </div>
@@ -110,7 +111,7 @@
             <h1 id="u-baslik">Ürün Yükleniyor...</h1>
             <div id="u-fiyat" class="fiyat"></div>
             <p id="u-aciklama" class="aciklama"></p>
-            <button class="sepete-ekle-btn">Sepete Ekle</button>
+            <button class="sepete-ekle-btn" onclick="sepeteEkle(this)">Sepete Ekle</button>
         </div>
     </div>
 
@@ -177,23 +178,23 @@
                 fiyat: "280 TL",
                 resim: "images/yüz temizleme jeli/yüztemizlemejeli11.png",
                 aciklama: "Yağlı ciltler için derinlemesine temizlik."
-        },
+            },
             "jel22": {
                 baslik: "Köpük Temizleyici",
                 fiyat: "320 TL",
-                resim:"images/yüz temizleme jeli/yüztemizlemejeli22.png",
+                resim: "images/yüz temizleme jeli/yüztemizlemejeli22.png",
                 aciklama: "Kuru ciltleri kurutmadan temizler."
             },
             "jel3": {
                 baslik: "Hassas Ciltler İçin Jel",
                 fiyat: "300 TL",
-                resim:"images/yüz temizleme jeli/yüztemizlemejei3.png",
+                resim: "images/yüz temizleme jeli/yüztemizlemejei3.png",
                 aciklama: "Ölü derilerden arındırır."
             },
             "jel4": {
                 baslik: "Yağ Bazlı Temizleyici",
                 fiyat: "350 TL",
-                resim:"images/yüz temizleme jeli/yüztemizlemejeli4.png",
+                resim: "images/yüz temizleme jeli/yüztemizlemejeli4.png",
                 aciklama: "Yumuşak formül, cildi yormaz."
             },
 
@@ -201,25 +202,25 @@
             "nem1": {
                 baslik: "Su Bazlı Nemlendirici",
                 fiyat: "400 TL",
-                resim:"images/nemlendirici/nemlendirici1.png" ,
+                resim: "images/nemlendirici/nemlendirici1.png",
                 aciklama: "Su bazlı, hafif yapılı nemlendirici."
             },
             "nem2": {
                 baslik: "Yoğun Bakım Kremi",
                 fiyat: "450 TL",
-                resim:"images/nemlendirici/nemlendirici2.png",
+                resim: "images/nemlendirici/nemlendirici2.png",
                 aciklama: "Kuru ve çatlamış ciltler için."
             },
             "nem33": {
                 baslik: "Gece Maskesi",
                 fiyat: "480 TL",
-                resim:"images/nemlendirici/nemlendirici33.png" ,
+                resim: "images/nemlendirici/nemlendirici33.png",
                 aciklama: "Parlamayı önler, nem verir."
             },
             "nem4": {
                 baslik: "Onarıcı Cica Krem",
                 fiyat: "390 TL",
-                resim:"images/nemlendirici/nemlendirici4.png",
+                resim: "images/nemlendirici/nemlendirici4.png",
                 aciklama: "Siz uyurken cildinizi besler."
             },
 
@@ -227,25 +228,25 @@
             "tonik1": {
                 baslik: "Gözenek Sıkılaştırıcı Tonik",
                 fiyat: "350 TL",
-                resim:"images/tonik/tonik1.png",
+                resim: "images/tonik/tonik1.png",
                 aciklama: "Gözenek görünümünü azaltır."
             },
             "tonik2": {
                 baslik: "Aydınlatıcı Vitamin Tonik",
                 fiyat: "380 TL",
-                resim:"images/tonik/tonik2.png" ,
+                resim: "images/tonik/tonik2.png",
                 aciklama: "Cilde parlaklık verir."
             },
             "tonik3": {
                 baslik: "Yatıştırıcı Gül Suyu Tonik",
                 fiyat: "290 TL",
-                resim:"images/tonik/tonik3.png",
+                resim: "images/tonik/tonik3.png",
                 aciklama: "Kızarıklıkları alır."
             },
             "tonik44": {
                 baslik: "Matlaştırıcı Tonik",
                 fiyat: "320 TL",
-                resim:"images/tonik/tonik44.png",
+                resim: "images/tonik/tonik44.png",
                 aciklama: "Siyah nokta karşıtı."
             }
         };
@@ -265,6 +266,76 @@
             // Ürün bulunamazsa
             document.getElementById('u-baslik').innerText = "Ürün Bulunamadı";
             document.getElementById('u-aciklama').innerText = "Lütfen ana sayfadan bir ürün seçiniz.";
+        }
+
+
+
+        /* --- ÜRÜN DETAY SAYFASI İÇİN EKLEME --- */
+
+        // 1. Detay sayfasındaki butona tıklama görevi ver
+        // Sayfadaki "Sepete Ekle" butonunu buluyoruz
+        var buton = document.querySelector(".sepete-ekle-btn");
+        if (buton) {
+            buton.onclick = function () {
+                // Hafızadan mevcut sayıyı al, yoksa 0 kabul et
+                var mevcutSayi = localStorage.getItem('sepetSayisi') || 0;
+
+                // Sayıyı 1 artır (Matematik işlemi için parseInt kullanıyoruz)
+                mevcutSayi = parseInt(mevcutSayi) + 1;
+
+                // Yeni sayıyı hafızaya kaydet
+                localStorage.setItem('sepetSayisi', mevcutSayi);
+
+                // Alert yerine bunu yaz:
+                bildirimGoster("Ürün başarıyla sepete eklendi!");
+
+                // İstersen burada sepet ikonun olmadığı için kullanıcıyı uyarabilirsin
+            };
+        }
+    </script>
+    <div id="toast-kutusu"><i class="fa-solid fa-check"></i> Ürün sepete eklendi!</div>
+
+    <style>
+        #toast-kutusu {
+            visibility: hidden; /* Başlangıçta görünmez */
+            min-width: 250px; /* Kutunun genişliği */
+            background-color: #333; /* Koyu gri arka plan (daha şık durur) */
+            color: #000; /* Beyaz yazı */
+            text-align: center; /* Yazıyı ortala */
+            border-radius: 50px; /* Kenarları yuvarlat */
+            padding: 16px; /* İç boşluk */
+            position: fixed; /* Ekrana sabitle */
+            z-index: 1000; /* En üstte dursun */
+            left: 50%; /* Ortala */
+            bottom: 30px; /* Aşağıdan mesafe */
+            transform: translateX(-50%); /* Tam ortalamak için */
+            font-size: 16px; /* Yazı boyutu */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Gölge */
+            opacity: 0;
+            transition: opacity 0.5s, bottom 0.5s; /* Animasyon hızı */
+        }
+
+            /* Gösterildiği zamanki hali */
+            #toast-kutusu.goster {
+                visibility: visible;
+                opacity: 1;
+                bottom: 50px; /* Hafifçe yukarı kayar */
+                background-color: #e0a6aa; /* SENİN RENGİN (Toz Pembe) */
+            }
+    </style>
+
+    <script>
+        function bildirimGoster(mesaj) {
+            var x = document.getElementById("toast-kutusu");
+
+            // Eğer özel bir mesaj geldiyse onu yaz, yoksa varsayılanı kullan
+            if (mesaj) x.innerHTML = '<i class="fa-solid fa-check"></i> ' + mesaj;
+
+            // 'goster' sınıfını ekle (Kutu görünür)
+            x.className = "goster";
+
+            // 3 saniye (3000ms) sonra 'goster' sınıfını kaldır (Kutu kaybolur)
+            setTimeout(function () { x.className = x.className.replace("goster", ""); }, 3000);
         }
     </script>
 </body>

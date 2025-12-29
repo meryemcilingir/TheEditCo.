@@ -2,11 +2,100 @@
     ViewData["Title"] = "Sepetim";
 }
 
-<div class="text-center" style="margin-top: 50px;">
-    <i class="fa-solid fa-bag-shopping fa-4x text-muted mb-3"></i>
+<div class="container" style="margin-top: 50px; min-height: 400px;">
+    <h2 style="margin-bottom: 30px; font-weight: 300;">ALIŞVERİŞ SEPETİNİZ</h2>
 
-    <h2>Alışveriş Sepetin</h2>
-    <p>Sepetinde henüz ürün yok.</p>
+    <div id="sepet-dolu" style="display: none;">
+        <table class="table" style="vertical-align: middle;">
+            <thead>
+                <tr style="background-color: #f9f9f9;">
+                    <th>Ürün</th>
+                    <th>Fiyat</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody id="sepet-listesi">
+            </tbody>
+        </table>
 
-    <a href="/Home/Products" class="btn btn-dark mt-3">Alışverişe Devam Et</a>
+        <div style="text-align: right; margin-top: 20px;">
+            <h4>Toplam: <span id="sepet-toplam" style="color: #e0a6aa; font-weight: bold;">0 TL</span></h4>
+            <button class="btn btn-dark" style="margin-top: 10px; padding: 10px 30px;">Ödemeye Geç</button>
+        </div>
+
+        <button onclick="sepetiBosalt()" class="btn btn-outline-danger btn-sm" style="margin-top: 20px;">Sepeti Temizle</button>
+    </div>
+
+    <div id="sepet-bos" style="text-align: center; padding: 50px; display: none;">
+        <i class="fa-solid fa-basket-shopping" style="font-size: 60px; color: #ddd; margin-bottom: 20px;"></i>
+        <p style="font-size: 18px; color: #777;">Sepetinizde henüz ürün yok.</p>
+        <a href="/" class="btn" style="background-color: #e0a6aa; color: white;">Alışverişe Başla</a>
+    </div>
 </div>
+
+<script>
+    // Sayfa açılınca çalışır
+    document.addEventListener("DOMContentLoaded", function() {
+        listeyiGetir();
+    });
+
+    function listeyiGetir() {
+        // Hafızadan sepeti çek
+        var sepet = JSON.parse(localStorage.getItem('sepetim')) || [];
+        var listeKutusu = document.getElementById("sepet-listesi");
+        var toplamTutar = 0;
+
+        listeKutusu.innerHTML = ""; // Önce temizle
+
+        if (sepet.length === 0) {
+            document.getElementById("sepet-dolu").style.display = "none";
+            document.getElementById("sepet-bos").style.display = "block";
+            return;
+        }
+
+        // Sepet doluysa göster
+        document.getElementById("sepet-dolu").style.display = "block";
+        document.getElementById("sepet-bos").style.display = "none";
+
+        // Her ürün için bir satır oluştur
+        sepet.forEach(function(urun, index) {
+            // Fiyatı sayıya çevir (TL yazısını at)
+            var fiyatSayi = parseFloat(urun.fiyat.replace('TL', '').replace(' ', ''));
+            toplamTutar += fiyatSayi;
+
+            var satir = `
+                <tr>
+                    <td style="display: flex; align-items: center; gap: 15px;">
+                        <img src="${urun.resim}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;">
+                        <span style="font-weight: 500;">${urun.ad}</span>
+                    </td>
+                    <td>${urun.fiyat}</td>
+                    <td>
+                        <button onclick="urunuSil(${index})" class="btn btn-sm text-danger"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+            listeKutusu.innerHTML += satir;
+        });
+
+        // Toplamı yaz
+        document.getElementById("sepet-toplam").innerText = toplamTutar + " TL";
+    }
+
+    function urunuSil(index) {
+        var sepet = JSON.parse(localStorage.getItem('sepetim')) || [];
+        sepet.splice(index, 1); // Listeden sil
+        localStorage.setItem('sepetim', JSON.stringify(sepet)); // Güncel hali kaydet
+
+        // Sayacı güncelle (Header'daki)
+        localStorage.setItem('sepetSayisi', sepet.length);
+
+        listeyiGetir(); // Listeyi yenile
+    }
+
+    function sepetiBosalt() {
+        localStorage.removeItem('sepetim');
+        localStorage.setItem('sepetSayisi', 0);
+        listeyiGetir();
+    }
+</script>

@@ -30,11 +30,23 @@
         <div class="nav-right">
             <a href="/Favorites/Index" style="margin-right: 15px; text-decoration: none; color:black;">
                 <i class="fa-regular fa-heart fa-lg"></i>
-                <a href="/Cart/Index" style="margin-right: 15px; text-decoration: none; color: black;">
-                    <i class="bi bi-bag" style="font-size: 1.3rem;"></i>
-                </a>
-                </a>
+             <a href="/Cart/Index" style="position: relative; display: inline-block; text-decoration: none; color: black; margin-right: 20px;">
+                    <i class="bi bi-bag" style="font-size: 1.5rem;"></i>
+                    <span id="sepet-sayisi" style="
+                     position: absolute;
+                     top: -5px;    /* Yukarı-aşağı ayarı */
+                     right: -8px;  /* Sağ-sol ayarı (Eksi değer sağa iter) */
+                     background-color: #e0a6aa;
+                     color: white;
+                     border-radius: 50%;
+                     font-size: 11px;
+                     font-weight: bold;
+                     padding: 2px 6px;
+                     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                     ">0</span>
+             </a>
             </a>
+
             @if (Context.Session.GetString("UserEmail") == null)
             {
                 <a href="/Account/Login">Giriş Yap / Üye Ol</a>
@@ -52,7 +64,66 @@
         @RenderBody()
     </main>
 
-    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Hafızadaki kayıtlı sayıyı bul
+            var kayitliSayi = localStorage.getItem('sepetSayisi');
+
+            // 2. Sepet yuvarlağını bul
+            var sepetRozeti = document.getElementById("sepet-sayisi");
+
+            // 3. Eğer hafızada sayı varsa ve rozet yerindeyse, sayıyı yaz
+            if (kayitliSayi && sepetRozeti) {
+                sepetRozeti.innerText = kayitliSayi;
+            }
+        });
+    </script>
+
+    <div id="toast-kutusu"><i class="fa-solid fa-check"></i> Ürün sepete eklendi!</div>
+
+    <style>
+        #toast-kutusu {
+            visibility: hidden; /* Başlangıçta görünmez */
+            min-width: 250px; /* Kutunun genişliği */
+            background-color: #333; /* Koyu gri arka plan (daha şık durur) */
+            color: #000; /* Siyah yazı */
+            text-align: center; /* Yazıyı ortala */
+            border-radius: 50px; /* Kenarları yuvarlat */
+            padding: 16px; /* İç boşluk */
+            position: fixed; /* Ekrana sabitle */
+            z-index: 1000; /* En üstte dursun */
+            left: 50%; /* Ortala */
+            bottom: 30px; /* Aşağıdan mesafe */
+            transform: translateX(-50%); /* Tam ortalamak için */
+            font-size: 16px; /* Yazı boyutu */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Gölge */
+            opacity: 0;
+            transition: opacity 0.5s, bottom 0.5s; /* Animasyon hızı */
+        }
+
+            /* Gösterildiği zamanki hali */
+            #toast-kutusu.goster {
+                visibility: visible;
+                opacity: 1;
+                bottom: 50px; /* Hafifçe yukarı kayar */
+                background-color: #e0a6aa; /* SENİN RENGİN (Toz Pembe) */
+            }
+    </style>
+
+    <script>
+        function bildirimGoster(mesaj) {
+            var x = document.getElementById("toast-kutusu");
+
+            // Eğer özel bir mesaj geldiyse onu yaz, yoksa varsayılanı kullan
+            if (mesaj) x.innerHTML = '<i class="fa-solid fa-check"></i> ' + mesaj;
+
+            // 'goster' sınıfını ekle (Kutu görünür)
+            x.className = "goster";
+
+            // 3 saniye (3000ms) sonra 'goster' sınıfını kaldır (Kutu kaybolur)
+            setTimeout(function(){ x.className = x.className.replace("goster", ""); }, 3000);
+        }
+    </script>
 
 </body>
 </html>
