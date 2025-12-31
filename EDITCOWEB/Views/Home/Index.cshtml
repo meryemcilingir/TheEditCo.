@@ -116,13 +116,14 @@
     transition: background-color 0.3s;
 }
 
-/* Linklerin Üzerine Gelince */
+    /* Linklerin Üzerine Gelince */
 .filtre-dropdown-icerik a:hover {
     background-color: #f9f9f9;
     color: #e0a6aa; /* Pembe renk */
-}
+    }
 
-/* Menü Açıldığında Göster */
+
+    /* Menü Açıldığında Göster */
 .show {
     display: block;
     animation: menuyuAc 0.3s ease-out; /* Açılma efekti */
@@ -169,7 +170,6 @@
     <div class="urunler-baslik-kapsayici" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; position: relative;">
 
         <h2 class="section-title" style="margin: 0;">ÜRÜNLERİMİZ</h2>
-
         <div class="filtre-menusu-kapsayici">
 
             <div class="filtre-simgesi" onclick="menuyuAcKapat()">
@@ -183,9 +183,11 @@
                 <a href="#nemlendiriciler" onclick="menuyuKapat()">Nemlendiriciler</a>
                 <a href="#tonikler" onclick="menuyuKapat()">Tonikler</a>
                 <a href="#yeni-gelenler" onclick="menuyuKapat()">Yeni Gelenler</a>
+                <a href="#kampanyalar" onclick="menuyuKapat()">Kampanyalar</a>
             </div>
 
         </div>
+
     </div>
 
     <h4 class="kategori-baslik" id="serumlar">SERUMLAR</h4>
@@ -517,7 +519,7 @@
 </section>
 
 <section id="kampanyalar" class="section container py-5">
-    <h2 class="text-center mb-4">Kampanyalar</h2>
+    <h2 class="text-center mb-4" id="kampanyalar">Kampanyalar</h2>
     <div id="slider-kapsayici" style="width: 100%; margin: 0 auto; overflow: hidden; position: relative; border-radius: 20px;">
 
         <div id="slider-serit" style="display: flex; width: 100%; transition: transform 1s ease-in-out;">
@@ -538,72 +540,103 @@
     </div>
 </section>
 
-function menuyuAcKapat() {
-    var menu = document.getElementById("filtre-dropdown");
-    if (menu) {
-        menu.classList.toggle("show");
-    } else {
-        console.error("Hata: 'filtre-dropdown' id'li kutu bulunamadı.");
-    }
-}
+<script>
+    //kampanyalar sliderı
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. Gerekli elementleri seçiyoruz
+        var serit = document.getElementById("slider-serit");
+        var slaytlar = serit.getElementsByTagName("a"); // Resimler 'a' etiketi içinde
+        var toplamSlayt = slaytlar.length;
+        var aktifSlayt = 0; // Başlangıçta 0. slayt (ilk resim)
+
+        // 2. Slayt Değiştirme Fonksiyonu
+        function slaytDegistir() {
+            aktifSlayt++; // Sıradaki slayta geç
+
+            // Eğer son slayta geldiysek, başa (0'a) dön
+            if (aktifSlayt >= toplamSlayt) {
+                aktifSlayt = 0;
+            }
+
+            // Şeridi sola doğru kaydır (%0, -%100, -%200...)
+            var kaydirmaMiktari = -(aktifSlayt * 100);
+            serit.style.transform = "translateX(" + kaydirmaMiktari + "%)";
+        }
+
+        // 3. Zamanlayıcıyı Başlat (5000ms = 5 Saniye)
+        setInterval(slaytDegistir, 5000);
+    });
+</script>
 
 <script>
-    <script>
-        // Sayfa açılınca sepetteki sayıyı göster
-        guncelleSepetSayisi();
-
-        function sepeteEkle(tiklananButon) {
-            // 1. Tıklanan butonun içinde bulunduğu Ürün Kutusunu bul
-            // (Senin kodunda 'urun-kutusu', 'card' veya 'col-md-...' olabilir, hepsini deniyoruz)
-            var urunKutusu = tiklananButon.closest('.urun-kutusu, .card, .col, .col-md-3, .col-md-4, .urun-gorsel');
-
-            if (urunKutusu) {
-                // 2. O kutunun içindeki Resim, İsim ve Fiyatı bul
-                // (Not: HTML etiketlerin farklıysa burayı güncellememiz gerekebilir)
-                var resim = urunKutusu.querySelector('img').src;
-
-                // Başlığı bulmaya çalış (h4, h5 veya card-title olabilir)
-                var adElementi = urunKutusu.querySelector('h4, h5, .card-title, .urun-baslik');
-                var ad = adElementi ? adElementi.innerText : "Ürün Adı Bulunamadı";
-
-                // Fiyatı bulmaya çalış
-                var fiyatElementi = urunKutusu.querySelector('.fiyat, .price, p b, span b');
-                var fiyat = fiyatElementi ? fiyatElementi.innerText : "Fiyat Yok";
-
-                // 3. Yeni Ürün Paketi Hazırla
-                var yeniUrun = {
-                    resim: resim,
-                    ad: ad,
-                    fiyat: fiyat,
-                    adet: 1
-                };
-
-                // 4. Sepeti Hafızadan Çek
-                var sepet = JSON.parse(localStorage.getItem('sepetim')) || [];
-
-                // 5. Listeye Ekle
-                sepet.push(yeniUrun);
-
-                // 6. Güncel Listeyi Kaydet
-                localStorage.setItem('sepetim', JSON.stringify(sepet));
-
-                // 7. Sadece sayıyı da ayrıca kaydet (Header'daki yuvarlak için)
-                localStorage.setItem('sepetSayisi', sepet.length);
-
-                // 8. Bildirim Ver ve Sayacı Güncelle
-                bildirimGoster("Ürün sepete eklendi!");
-                guncelleSepetSayisi();
-
-            } else {
-                console.error("HATA: Ürün kutusu bulunamadı! Class isimlerini kontrol et.");
-                alert("Hata oluştu, F12 Console ekranına bakınız.");
-            }
+    //filtreleme menüsünün açılıp kapanması ile ilgili bir kod//
+    function menuyuAcKapat() {
+        var menu = document.getElementById("filtre-dropdown");
+        if (menu) {
+            menu.classList.toggle("show");
+        } else {
+            console.error("Hata: 'filtre-dropdown' id'li kutu bulunamadı.");
         }
-
-        function guncelleSepetSayisi() {
-            var sepet = JSON.parse(localStorage.getItem('sepetim')) || [];
-            var rozet = document.getElementById("sepet-sayisi");
-            if (rozet) rozet.innerText = sepet.length;
-        }
+    }
 </script>
+
+
+<script>
+
+    // Sayfa açılınca sepetteki sayıyı göster
+    guncelleSepetSayisi();
+
+    function sepeteEkle(tiklananButon) {
+        // 1. Tıklanan butonun içinde bulunduğu Ürün Kutusunu bul
+        // (Senin kodunda 'urun-kutusu', 'card' veya 'col-md-...' olabilir, hepsini deniyoruz)
+        var urunKutusu = tiklananButon.closest('.urun-kutusu, .card, .col, .col-md-3, .col-md-4, .urun-gorsel');
+
+        if (urunKutusu) {
+            // 2. O kutunun içindeki Resim, İsim ve Fiyatı bul
+            // (Not: HTML etiketlerin farklıysa burayı güncellememiz gerekebilir)
+            var resim = urunKutusu.querySelector('img').src;
+
+            // Başlığı bulmaya çalış (h4, h5 veya card-title olabilir)
+            var adElementi = urunKutusu.querySelector('h4, h5, .card-title, .urun-baslik');
+            var ad = adElementi ? adElementi.innerText : "Ürün Adı Bulunamadı";
+
+            // Fiyatı bulmaya çalış
+            var fiyatElementi = urunKutusu.querySelector('.fiyat, .price, p b, span b');
+            var fiyat = fiyatElementi ? fiyatElementi.innerText : "Fiyat Yok";
+
+            // 3. Yeni Ürün Paketi Hazırla
+            var yeniUrun = {
+                resim: resim,
+                ad: ad,
+                fiyat: fiyat,
+                adet: 1
+            };
+
+            // 4. Sepeti Hafızadan Çek
+            var sepet = JSON.parse(localStorage.getItem('sepetim')) || [];
+
+            // 5. Listeye Ekle
+            sepet.push(yeniUrun);
+
+            // 6. Güncel Listeyi Kaydet
+            localStorage.setItem('sepetim', JSON.stringify(sepet));
+
+            // 7. Sadece sayıyı da ayrıca kaydet (Header'daki yuvarlak için)
+            localStorage.setItem('sepetSayisi', sepet.length);
+
+            // 8. Bildirim Ver ve Sayacı Güncelle
+            bildirimGoster("Ürün sepete eklendi!");
+            guncelleSepetSayisi();
+
+        } else {
+            console.error("HATA: Ürün kutusu bulunamadı! Class isimlerini kontrol et.");
+            alert("Hata oluştu, F12 Console ekranına bakınız.");
+        }
+    }
+
+    function guncelleSepetSayisi() {
+        var sepet = JSON.parse(localStorage.getItem('sepetim')) || [];
+        var rozet = document.getElementById("sepet-sayisi");
+        if (rozet) rozet.innerText = sepet.length;
+    }
 </script>

@@ -17,10 +17,11 @@
     <!-- NAVBAR -->
     <header class="navbar">
         <div class="nav-left">
-            <a href="/">Anasayfa</a>
-            <a href="/Home/Products">Ürünler</a>
-            <a href="#">Yeni Gelenler</a>
-            <a href="#">Kampanyalar</a>
+            <a href="/">Anasayfa</a>         
+            <a href="#urunler">Ürünler</a>
+            <a href="#yeni-gelenler">Yeni Gelenler</a>
+            <a href="#kampanyalar">Kampanyalar</a>
+            <a href="#">Cilt Tipini Öğren</a>
         </div>
 
         <div class="nav-logo">
@@ -30,6 +31,7 @@
         <div class="nav-right">
             <a href="/Favorites/Index" style="margin-right: 15px; text-decoration: none; color:black;">
                 <i class="fa-regular fa-heart fa-lg"></i>
+            </a>
              <a href="/Cart/Index" style="position: relative; display: inline-block; text-decoration: none; color: black; margin-right: 20px;">
                     <i class="bi bi-bag" style="font-size: 1.5rem;"></i>
                     <span id="sepet-sayisi" style="
@@ -45,7 +47,7 @@
                      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
                      ">0</span>
              </a>
-            </a>
+            
 
             @if (Context.Session.GetString("UserEmail") == null)
             {
