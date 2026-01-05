@@ -9,7 +9,7 @@ namespace EDITCOWEB.Controllers
             // KURAL: Eğer kullanıcı giriş yapmamışsa, Giriş Yap sayfasına gönder.
             if (HttpContext.Session.GetString("UserEmail") == null)
             {
-                return Redirect("/Account/Login");
+               return Redirect("/Account/Login");
             }
 
             // Giriş yapmışsa Sepet sayfasını göster.
