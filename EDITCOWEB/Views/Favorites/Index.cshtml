@@ -2,9 +2,79 @@
     ViewData["Title"] = "Favorilerim";
 }
 
-<div class="text-center" style="margin-top: 50px;">
-    <h2>❤️ Favori Ürünlerim</h2>
-    <p>Beğendiğin ürünler burada listelenecek.</p>
-    <br />
-    <a href="/Home/Products" class="btn btn-primary">Alışverişe Başla</a>
-</div>
+<h2 style="margin-bottom:20px;">Favorilerim</h2>
+
+<div id="favoritesContainer" class="ozel-urun-grid"></div>
+
+<a href="/" style="display:inline-block;margin-top:20px;">Alışverişe Başla</a>
+
+<style>
+    .ozel-urun-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+        .ozel-urun-grid img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+    .urun-karti-yeni {
+        background: #fff;
+        border-radius: 16px;
+        padding: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        var container = document.getElementById("favoritesContainer");
+
+        if (favorites.length === 0) {
+            container.innerHTML = "<p>Henüz favori eklenmedi.</p>";
+            return;
+        }
+
+        favorites.forEach(function (item, index) {
+
+            var card = `
+            <div class="urun-karti-yeni">
+                <div class="resim-cercevesi">
+                    <img src="${item.image}" alt="${item.name}">
+                </div>
+                <div class="urun-bilgileri">
+                    <div class="marka-adi">THE EDIT CO.</div>
+                    <div class="urun-ismi">${item.name}</div>
+                    <div class="urun-fiyati">${item.price}</div>
+
+                    <button onclick="removeFavorite(${index})"
+                            style="margin-top:10px;
+                                   background:#e0a6aa;
+                                   border:none;
+                                   color:white;
+                                   padding:8px 12px;
+                                   border-radius:8px;
+                                   cursor:pointer;">
+                        Favoriden Çıkar
+                    </button>
+                </div>
+            </div>
+            `;
+
+            container.insertAdjacentHTML("beforeend", card);
+        });
+    });
+
+    function removeFavorite(index) {
+        var favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        favorites.splice(index, 1);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+        location.reload();
+    }
+</script>

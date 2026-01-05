@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ürün Detayı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -72,7 +74,8 @@
             margin-bottom: 30px;
         }
 
-        /* Pembe Buton */
+        <div style="font-size:40px; color:red;" > ❤</div >
+
         .sepete-ekle-btn {
             background-color: #e0a6aa;
             color: white;
@@ -86,10 +89,10 @@
             box-shadow: 0 4px 10px rgba(224, 166, 170, 0.4);
         }
 
-            .sepete-ekle-btn:hover {
-                background-color: #c9858a;
-                transform: scale(1.05);
-            }
+        .sepete-ekle-btn:hover {
+            background-color: #c9858a;
+            transform: scale(1.05);
+        }
 
         @media (max-width: 768px) {
             .urun-kapsayici {
@@ -367,5 +370,36 @@
             setTimeout(function () { x.className = x.className.replace("goster", ""); }, 3000);
         }
     </script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const productCode = urlParams.get("kod");
+
+        const favKey = "favorites";
+        let favorites = JSON.parse(localStorage.getItem(favKey)) || [];
+
+        const heart = document.getElementById("favHeart");
+
+        if (favorites.includes(productCode)) {
+            heart.classList.remove("fa-regular");
+            heart.classList.add("fa-solid");
+        }
+
+        function toggleFavorite() {
+            if (!productCode) return;
+
+            if (favorites.includes(productCode)) {
+                favorites = favorites.filter(x => x !== productCode);
+                heart.classList.remove("fa-solid");
+                heart.classList.add("fa-regular");
+            } else {
+                favorites.push(productCode);
+                heart.classList.remove("fa-regular");
+                heart.classList.add("fa-solid");
+            }
+
+            localStorage.setItem(favKey, JSON.stringify(favorites));
+        }
+    </script>
+
 </body>
 </html>
