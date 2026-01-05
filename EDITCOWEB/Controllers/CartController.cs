@@ -6,13 +6,13 @@ namespace EDITCOWEB.Controllers
     {
         public IActionResult Index()
         {
-            // KURAL: Eğer kullanıcı giriş yapmamışsa, Giriş Yap sayfasına gönder.
+            // Giriş yapılmamışsa login'e at
             if (HttpContext.Session.GetString("UserEmail") == null)
             {
                return Redirect("/Account/Login");
             }
 
-            // Giriş yapmışsa Sepet sayfasını göster.
+            // Giriş yapılmışsa sepet sayfasını göster
             return View();
         }
     }
